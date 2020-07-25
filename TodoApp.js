@@ -5,11 +5,7 @@ class TodoApp extends HTMLElement {
   constructor() {
     super();
     this._shadowRoot = this.attachShadow({ mode: "open" });
-
-    this.todos = [
-      { text: "Learn Web Components", checked: true },
-      { text: "Go for a hike", checked: false },
-    ];
+    this.todos = [];
 
     render(this.template(), this._shadowRoot, { eventContext: this });
 
@@ -90,42 +86,42 @@ class TodoApp extends HTMLElement {
       </style>
 
       <section id="app">
-      <form id="todo-input">
-        <input type="text" placeholder="Add a new to-do"></input>
-        <button @click=${this._addTodoItem}>Add Todo</button>
-      </form>
+        <form id="todo-input">
+          <input type="text" placeholder="Add a new to-do"></input>
+          <button @click=${this._addTodoItem}>Add Todo</button>
+        </form>
 
-      <h1>Your Todos</h1>
+        <h1>Your Todos</h1>
 
-      <ul id="todos-container">
-        ${
-          this.todos.length > 0
-            ? this.todos.map(
-                (todo, index) => html`
-                  <wc-todo-item
-                    ?checked=${todo.checked}
-                    .index=${index}
-                    todo=${todo.text}
-                    @onRemove=${this._removeTodoItem}
-                    @onToggle=${this._toggleTodoItem}
-                  >
-                  </wc-todo-item>
-                `
-              )
-            : html`<h2 id="no-data">Nothing to do.</h2>`
-        }
-      </ul>
+        <ul id="todos-container">
+          ${
+            this.todos.length > 0
+              ? this.todos.map(
+                  (todo, index) => html`
+                    <wc-todo-item
+                      ?checked=${todo.checked}
+                      .index=${index}
+                      todo=${todo.text}
+                      @onRemove=${this._removeTodoItem}
+                      @onToggle=${this._toggleTodoItem}
+                    >
+                    </wc-todo-item>
+                  `
+                )
+              : html`<h2 id="no-data">Nothing to do.</h2>`
+          }
+        </ul>
       </section>
     `;
-  }
-
-  get todos() {
-    return this._todos;
   }
 
   set todos(value) {
     this._todos = value;
     render(this.template(), this._shadowRoot, { eventContext: this });
+  }
+
+  get todos() {
+    return this._todos;
   }
 }
 
