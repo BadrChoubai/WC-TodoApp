@@ -30,10 +30,14 @@
         }
 
         #title>p {
+            display: inline;
+        }
+
+        #title>div {
+            display: inline-block;
             border-left: solid 3px #288bcb;
             border-bottom: solid 3px #d3eb2a;
-            display: inline;
-            padding: 0 1rem .5rem;
+            padding: 0 1rem;
         }
     </style>
 
@@ -45,7 +49,9 @@
     <main id="app">
         <header id="title">
             <h1>WC Todo App</h1>
-            <p>A Todo App Built Using Web Components</p>
+            <div>
+                <p>A Todo App Built Using Web Components</p>
+            </div>
         </header>
 
         <wc-todo-app></wc-todo-app>
