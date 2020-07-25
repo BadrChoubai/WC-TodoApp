@@ -34,6 +34,7 @@ class TodoItem extends HTMLElement {
 
     this._shadowRoot = this.attachShadow({ mode: "open" });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this._checked;
     this._text;
 
     this.$item = this._shadowRoot.querySelector("#item");
@@ -51,11 +52,18 @@ class TodoItem extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["text"];
+    return ["checked", "text"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this._text = newValue;
+    switch (name) {
+      case "checked":
+        this._checked = this.hasAttribute("checked");
+        break;
+      case "text":
+        this._text = newValue;
+        break;
+    }
   }
 
   connectedCallback() {

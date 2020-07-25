@@ -107,6 +107,11 @@ class TodoApp extends HTMLElement {
     this._todos.forEach((todo, index) => {
       let $todoItem = document.createElement("wc-todo-item");
       $todoItem.setAttribute("text", todo.text);
+
+      if (todo.checked) {
+        $todoItem.setAttribute("checked", "");
+      }
+
       this.$todoList.appendChild($todoItem);
     });
   }
