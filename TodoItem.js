@@ -5,18 +5,18 @@ template.innerHTML = `
             display: block;
         }
 
-        .completed {
-            text-decoration: line-through;
-        }
-
         button {
             border: none;
             cursor: pointer;
             padding: 6px 16px;
         }
+
+        .completed {
+            text-decoration: line-through;
+        }
     </style>
 
-    <li className="item">
+    <li id="item">
         <input type="checkbox"/>
         <label></label>
         <button><i className="fa fa-trash"></i></button>
@@ -29,22 +29,23 @@ class TodoItem extends HTMLElement {
 
     this._shadowRoot = this.attachShadow({ mode: "open" });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this._text;
 
-    this.$item = this._shadowRoot.querySelector(".item");
+    this.$item = this._shadowRoot.querySelector("#item");
     this.$deleteButton = this._shadowRoot.querySelector("button");
     this.$todoItemText = this._shadowRoot.querySelector("label");
-    this.$todoMarker = this._shadowRoot.querySelector("input");
+    this.$checkbox = this._shadowRoot.querySelector("input[type='checkbox']");
 
     this.$deleteButton.addEventListener("click", (event) => {
       this.dispatchEvent(new CustomEvent("onRemove", { detail: this.index }));
     });
 
-    this.$todoMarker.addEventListener("click", (event) => {
+    this.$checkbox.addEventListener("click", (event) => {
       this.dispatchEvent(new CustomEvent("onToggle", { detail: this.index }));
     });
   }
 
-  static getObservedAttributes() {
+  static get observedAttributes() {
     return ["text"];
   }
 
