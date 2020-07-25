@@ -17,8 +17,17 @@ template.innerHTML = `
         }
 
         #item {
+          background: #fff;
+          box-shadow: 0 .3em .2em transparent;
           align-items: center;
+          border-bottom: .2rem solid rgba(88,93,96,0.05);
           display: flex;
+          padding: 16px;
+          transition: box-shadow ease-in-out 300ms;
+        }
+
+        #item:hover {
+          box-shadow: 0 .3em .2em rgba(0, 0, 0, 0.07);
         }
     </style>
 

@@ -35,11 +35,12 @@ template.innerHTML = `
         }
 
         #todos-container {
+          background: #f5f5f3;
+          box-shadow: 0 .2em .3em rgba(0, 0, 0, 0.06);
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
           gap: 1.4rem;
-          box-shadow: 0 .8em .3em rgba(0, 0, 0, 0.06);
           padding: 16px;
           justify-content: flex-start;
         }
