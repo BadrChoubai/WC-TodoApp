@@ -101,6 +101,11 @@ class TodoApp extends HTMLElement {
     }
   }
 
+  _removeTodoItem(event) {
+    this._todos.splice(event.detail, 1);
+    this._renderTodoList();
+  }
+
   _renderTodoList() {
     this.$todoList.innerHTML = ``;
 
@@ -111,6 +116,9 @@ class TodoApp extends HTMLElement {
       if (todo.checked) {
         $todoItem.setAttribute("checked", "");
       }
+
+      $todoItem.setAttribute("index", index);
+      $todoItem.addEventListener("onRemove", this._removeTodoItem.bind(this));
 
       this.$todoList.appendChild($todoItem);
     });

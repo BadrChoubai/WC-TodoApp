@@ -9,9 +9,10 @@ template.innerHTML = `
             border: none;
             cursor: pointer;
             display: inline;
+            margin-left: 1em;
         }
 
-        .completed {
+        .completed > label {
             text-decoration: line-through;
         }
 
@@ -24,7 +25,7 @@ template.innerHTML = `
     <li id="item">
         <input type="checkbox"/>
         <label></label>
-        <button><i className="fa fa-trash"></i></button>
+        <button>X</button>
     </li>
 `;
 
@@ -51,19 +52,30 @@ class TodoItem extends HTMLElement {
     });
   }
 
-  static get observedAttributes() {
-    return ["checked", "text"];
-  }
-
   attributeChangedCallback(name, oldValue, newValue) {
     switch (name) {
       case "checked":
         this._checked = this.hasAttribute("checked");
         break;
+      case "index":
+        this._index = parseInt(newValue);
+        break;
       case "text":
         this._text = newValue;
         break;
     }
+  }
+
+  static get observedAttributes() {
+    return ["checked", "index", "text"];
+  }
+
+  get index() {
+    return this._index;
+  }
+
+  set index(val) {
+    this.setAttribute("index", val);
   }
 
   connectedCallback() {
