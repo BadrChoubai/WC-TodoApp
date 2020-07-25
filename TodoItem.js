@@ -8,11 +8,16 @@ template.innerHTML = `
         button {
             border: none;
             cursor: pointer;
-            padding: 6px 16px;
+            display: inline;
         }
 
         .completed {
             text-decoration: line-through;
+        }
+
+        #item {
+          align-items: center;
+          display: flex;
         }
     </style>
 
