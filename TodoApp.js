@@ -1,10 +1,6 @@
 import { html, render } from "https://unpkg.com/lit-html?module";
 import "./TodoItem.js";
 
-const template = document.createElement("template");
-template.innerHTML = `
-`;
-
 class TodoApp extends HTMLElement {
   constructor() {
     super();
@@ -24,7 +20,7 @@ class TodoApp extends HTMLElement {
     event.preventDefault();
 
     if (this.$input.value.length > 0) {
-      this.todos = [...todos, { text: this.$input.value, checked: false }];
+      this.todos = [...this.todos, { text: this.$input.value, checked: false }];
       this.$input.value = ``;
     }
   }
@@ -107,7 +103,7 @@ class TodoApp extends HTMLElement {
             <wc-todo-item
               ?checked=${todo.checked}
               .index=${index}
-              text=${todo.text}
+              todo=${todo.text}
               @onRemove=${this._removeTodoItem}
               @onToggle=${this._toggleTodoItem}
             >

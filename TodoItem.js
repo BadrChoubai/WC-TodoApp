@@ -1,36 +1,10 @@
+import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@latest/lit-element.js?module";
 const template = document.createElement("template");
 template.innerHTML = `
-    <style>
-        :host {
-            display: block;
-        }
-
-        button {
-            border: none;
-            cursor: pointer;
-            display: inline;
-            margin-left: 1em;
-        }
-
-        .completed > label {
-            text-decoration: line-through;
-        }
-
-        #item {
-          background: #fff;
-          box-shadow: 0 .3em .2em transparent;
-          align-items: center;
-          border-bottom: .2rem solid rgba(88,93,96,0.05);
-          display: flex;
-          padding: 16px;
-          transition: box-shadow ease-in-out 300ms;
-        }
-
-        #item:hover {
-          box-shadow: 0 .3em .2em rgba(0, 0, 0, 0.07);
-        }
-    </style>
-
     <li id="item">
         <input type="checkbox"/>
         <label></label>
@@ -38,72 +12,78 @@ template.innerHTML = `
     </li>
 `;
 
-class TodoItem extends HTMLElement {
+class TodoItem extends LitElement {
+  static get properties() {
+    return {
+      checked: {
+        type: Boolean,
+        reflect: true,
+      },
+      index: { type: Number },
+      text: {
+        attribute: "todo",
+        type: String,
+        reflect: true,
+      },
+    };
+  }
+
   constructor() {
     super();
 
-    this._shadowRoot = this.attachShadow({ mode: "open" });
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this._checked;
-    this._text;
-
-    this.$item = this._shadowRoot.querySelector("#item");
-    this.$deleteButton = this._shadowRoot.querySelector("button");
-    this.$todoItemText = this._shadowRoot.querySelector("label");
-    this.$checkbox = this._shadowRoot.querySelector("input[type='checkbox']");
-
-    this.$deleteButton.addEventListener("click", (event) => {
-      this.dispatchEvent(new CustomEvent("onRemove", { detail: this.index }));
-    });
-
-    this.$checkbox.addEventListener("click", (event) => {
-      this.dispatchEvent(new CustomEvent("onToggle", { detail: this.index }));
-    });
+    this.text = ``;
+    this.checked = false;
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case "checked":
-        this._checked = this.hasAttribute("checked");
-        break;
-      case "index":
-        this._index = parseInt(newValue);
-        break;
-      case "text":
-        this._text = newValue;
-        break;
-    }
+  _fire(eventType) {
+    this.dispatchEvent(new CustomEvent(eventType, { detail: this.index }));
   }
 
-  static get observedAttributes() {
-    return ["checked", "index", "text"];
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      button {
+        border: none;
+        cursor: pointer;
+        display: inline;
+        margin-left: 1em;
+      }
+
+      .completed {
+        text-decoration: line-through;
+      }
+
+      #item {
+        background: #fff;
+        box-shadow: 0 0.3em 0.2em transparent;
+        align-items: center;
+        border-bottom: 0.2rem solid rgba(88, 93, 96, 0.05);
+        display: flex;
+        padding: 16px;
+        transition: box-shadow ease-in-out 300ms;
+      }
+
+      #item:hover {
+        box-shadow: 0 0.3em 0.2em rgba(0, 0, 0, 0.07);
+      }
+    `;
   }
 
-  get index() {
-    return this._index;
-  }
-
-  set index(val) {
-    this.setAttribute("index", val);
-  }
-
-  connectedCallback() {
-    if (!this.hasAttribute("text")) {
-      this.setAttribute("text", "placeholder");
-    }
-
-    this._renderTodoItem();
-  }
-
-  _renderTodoItem() {
-    if (this.hasAttribute("checked")) {
-      this.$item.classList.add("completed");
-      this.$checkbox.setAttribute("checked", "");
-    } else {
-      this.$item.classList.remove("completed");
-      this.$checkbox.removeAttribute("checked");
-    }
-    this.$todoItemText.innerHTML = this._text;
+  render() {
+    return html`
+      <li id="item">
+        <input
+          type="checkbox"
+          ?checked=${this.checked}
+          @change=${() => this._fire("onToggle")}
+        />
+        <label class=${this.checked ? "completed" : ""}>${this.text}</label>
+        <button @click=${() => this._fire("onRemove")}>X</button>
+      </li>
+    `;
   }
 }
 
