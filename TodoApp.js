@@ -61,7 +61,7 @@ class TodoApp extends HTMLElement {
           padding: 0;
         }
 
-        h1 {
+        h1, h2 {
           margin: 0;
           padding: 0;
         }
@@ -98,18 +98,22 @@ class TodoApp extends HTMLElement {
       <h1>Your Todos</h1>
 
       <ul id="todos-container">
-        ${this.todos.map(
-          (todo, index) => html`
-            <wc-todo-item
-              ?checked=${todo.checked}
-              .index=${index}
-              todo=${todo.text}
-              @onRemove=${this._removeTodoItem}
-              @onToggle=${this._toggleTodoItem}
-            >
-            </wc-todo-item>
-          `
-        )}
+        ${
+          this.todos.length > 0
+            ? this.todos.map(
+                (todo, index) => html`
+                  <wc-todo-item
+                    ?checked=${todo.checked}
+                    .index=${index}
+                    todo=${todo.text}
+                    @onRemove=${this._removeTodoItem}
+                    @onToggle=${this._toggleTodoItem}
+                  >
+                  </wc-todo-item>
+                `
+              )
+            : html`<h2 id="no-data">Nothing to do.</h2>`
+        }
       </ul>
       </section>
     `;
