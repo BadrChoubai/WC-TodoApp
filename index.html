@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WC Todo App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: "Avenir", sans-serif;
+        }
+
+        header {
+            margin-bottom: 2rem;
+        }
+
+        #app {
+            margin: auto;
+            padding: 0 16px;
+            width: 95%;
+        }
+
+        #title {
+            line-height: 1em;
+        }
+
+        #title>p {
+            border-left: solid 3px #288bcb;
+            border-bottom: solid 3px #d3eb2a;
+            display: inline;
+            padding: 0 1rem .5rem;
+        }
+    </style>
+
+    <script type="module" src="./TodoApp.js"></script>
+</head>
+
+<body>
+    <main id="app">
+        <header id="title">
+            <h1>WC Todo App</h1>
+            <p>A Todo App Built Using Web Components</p>
+        </header>
+
+        <wc-todo-app></wc-todo-app>
+    </main>
+
+
+    <script>
+        const todoApp = document.querySelector('wc-todo-app');
+        import('./TodoApp.js').then(() => {
+            todoApp.todos = [
+                { text: "Learn about Web Components", checked: false },
+                { text: "Go on a hike", checked: false },
+            ]
+        });
+    </script>
+</body>
+
+</html>
