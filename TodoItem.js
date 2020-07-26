@@ -3,14 +3,6 @@ import {
   html,
   css,
 } from "https://unpkg.com/lit-element@latest/lit-element.js?module";
-const template = document.createElement("template");
-template.innerHTML = `
-    <li id="item">
-        <input type="checkbox"/>
-        <label></label>
-        <button>X</button>
-    </li>
-`;
 
 class TodoItem extends LitElement {
   static get properties() {

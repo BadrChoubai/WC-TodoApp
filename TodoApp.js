@@ -1,15 +1,25 @@
-import { html, render } from "https://unpkg.com/lit-html?module";
+import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";
 import "./TodoItem.js";
 
-class TodoApp extends HTMLElement {
+class TodoApp extends LitElement {
+  static get properties() {
+    return {
+      todos: { type: Array },
+    };
+  }
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({ mode: "open" });
     this.todos = [];
 
-    render(this.template(), this._shadowRoot, { eventContext: this });
+    this.$input = this.shadowRoot.querySelector("input");
+  }
 
-    this.$input = this._shadowRoot.querySelector("input");
+  firstUpdated() {
+    this.$input = this.shadowRoot.querySelector("input");
   }
 
   _addTodoItem(event) {
@@ -33,58 +43,60 @@ class TodoApp extends HTMLElement {
     });
   }
 
-  template() {
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      button {
+        border: none;
+        cursor: pointer;
+        padding: 6px 16px;
+      }
+
+      ul {
+        align-items: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: space-around;
+        list-style: none;
+        padding: 0;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+
+      #app {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 0 16px;
+      }
+
+      #todo-input {
+        margin-bottom: 1rem;
+      }
+
+      #todos-container {
+        background: #f5f5f3;
+        box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.4rem;
+        padding: 16px;
+        justify-content: flex-start;
+      }
+    `;
+  }
+
+  render() {
     return html`
-      <style>
-        :host {
-          display: block;
-          text-align: left;
-        }
-
-        button {
-          border: none;
-          cursor: pointer;
-          padding: 6px 16px;
-        }
-
-        ul {
-          align-items: flex-start;
-          display: flex;
-          flex-wrap: wrap;
-          flex-direction: column;
-          justify-content: space-around;
-          list-style: none;
-          padding: 0;
-        }
-
-        h1, h2 {
-          margin: 0;
-          padding: 0;
-        }
-
-        #app {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          padding: 0 16px;
-        }
-
-        #todo-input {
-          margin-bottom: 1rem;
-        }
-
-        #todos-container {
-          background: #f5f5f3;
-          box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.06);
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          gap: 1.4rem;
-          padding: 16px;
-          justify-content: flex-start;
-        }
-      </style>
-
       <section id="app">
         <form id="todo-input">
           <input type="text" placeholder="Add a new to-do"></input>
@@ -113,15 +125,6 @@ class TodoApp extends HTMLElement {
         </ul>
       </section>
     `;
-  }
-
-  set todos(value) {
-    this._todos = value;
-    render(this.template(), this._shadowRoot, { eventContext: this });
-  }
-
-  get todos() {
-    return this._todos;
   }
 }
 
